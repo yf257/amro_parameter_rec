@@ -406,15 +406,15 @@ int FindFermi::interfunc(Ipp64f *kx, Ipp64f *ky, Ipp64f *kz, int *Laylength, int
 	}
 	return finalPoint;// - 1;
 }
-FindFermi::FindFermi(Ipp64f * param, int cdev)
+FindFermi::FindFermi(Ipp64f * param, int cdev,int Ngird)
 {
 	int current = 0;
 	//DataExtractor extractor(name);
 	//Ipp64f params[9] = { 0.074, 475, 525, -60, 16, 1000, 0.5, 17, 8 };
 	UpdatePar(param);
-	fineN = 600;//innitial grid inplane
+	fineN = 800;//innitial grid inplane
 	NumLeng = 0;//number of contour 
-	finP = 10;
+	finP = Ngird;
 	cdevs = cdev;//Kz grid
 	//Ipp64f * starts = extractor.getDataArray();
 	//int nPoints = floor((extractor.getNumberOfLines()) / 2);
@@ -518,10 +518,11 @@ FindFermi::FindFermi(Ipp64f * param, int cdev)
 	NumLeng = 0;
 
 	for (int k = 0; k < cdevs; ++k) {
-		for (int j = 0; j < fineN / 2; ++j) {
+		//for (int j = 0; j < fineN / 2; ++j) {
+		for (int j = fineN / 2 - 1; j >= 0; --j) {
 			for (int i = 0; i < fineN*fineN; ++i) {
-
-				if (funcval[i + k * (fineN*fineN)] < 3.1 && funcval[i + k * (fineN*fineN)] > 0.5 && ((i % fineN == j) || ((i) % fineN == (fineN - j - 1)) || ((i) / fineN == j) || ((i) / fineN == (fineN - j - 1)))) {
+				if (funcval[i + k * (fineN*fineN)] < 3.1 && funcval[i + k * (fineN*fineN)] > 0.5 && ((i % fineN >= j) && ((i) % fineN <= (fineN - j - 1)) && ((i) / fineN >= j) && ((i) / fineN <= (fineN - j - 1)))) {
+			//	if (funcval[i + k * (fineN*fineN)] < 3.1 && funcval[i + k * (fineN*fineN)] > 0.5 && ((i % fineN == j) || ((i) % fineN == (fineN - j - 1)) || ((i) / fineN == j) || ((i) / fineN == (fineN - j - 1)))) {
 					kx[nPoints] = 0.25*(tempx1[i + k * (fineN*fineN)] + tempx2[i + k * (fineN*fineN)] + tempx3[i + k * (fineN*fineN)] + tempx4[i + k * (fineN*fineN)]);
 					ky[nPoints] = 0.25*(tempy1[i + k * (fineN*fineN)] + tempy2[i + k * (fineN*fineN)] + tempy3[i + k * (fineN*fineN)] + tempy4[i + k * (fineN*fineN)]);
 					if (funcval[i + k * (fineN*fineN)] < 3.1 && funcval[i + k * (fineN*fineN)] >2.5) {
@@ -893,4 +894,7 @@ FindFermi::~FindFermi()
 	delete lengArr;
 	delete kx;
 	delete ky;
+	delete circumf;
+	delete zeros;
+
 }

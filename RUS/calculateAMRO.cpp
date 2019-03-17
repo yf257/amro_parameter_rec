@@ -26,13 +26,13 @@ calculateAMRO::calculateAMRO(double *data, double * param, Ipp64f * theta, int c
 	//cout << dataLeng << endl;
 	condout = new Ipp64f[_dataLeng];
 	//tau = .5;
-	final = 10*param[0] ;//time final?
-	steps = 800;//number of time steps?
+	final = 8 * param[0] ;//time final?
+	steps = 8;//number of time steps?
 	h = final / steps;
 	field45 = 7.91209; // 45 tesla in appropriate units
 	
 	
-	Fermi =new FindFermi( param,cdev);
+	Fermi =new FindFermi( param,cdev,gridN);
 
 	//DataExtractor extractor("starts.dat");
 	//Ipp64f * starts = extractor.getDataArray();

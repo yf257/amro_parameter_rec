@@ -39,7 +39,7 @@ int _tmain(int argc, _TCHAR* argv[]) //main function
 		cin >> cdev;
 		cout  << endl;
 		 
-		cout << "number of actual inplane grid points(not working)";
+		cout << "number of actual inplane grid points(1/4 BZ)";
 		cin >> gridN;
 		cout << endl; // output that dimension to the user
 		
@@ -52,7 +52,7 @@ int _tmain(int argc, _TCHAR* argv[]) //main function
 		cout << endl;
 		
 	
-		GeneticAlgorithm geneticAlgorithm(data, nPoints, 4*2, scale, cross, gridN, cdev,thetas,phi);
+		GeneticAlgorithm geneticAlgorithm(data, nPoints, 36 * 10, scale, cross, gridN, cdev,thetas,phi);
 		
 		geneticAlgorithm.calculateMinimum();
 		
@@ -60,10 +60,10 @@ int _tmain(int argc, _TCHAR* argv[]) //main function
 	
 	while(true){ // bad programming...
 
-		int nGens;
-		cout<<"Number of generations: ";
-		cin>>nGens;
-		cout<<endl;
+		int nGens=30;
+		//cout<<"Number of generations: ";
+		//cin>>nGens;
+		//cout<<endl;
 
 			//CURRENTLY ONE THREAD CHECK
 		//_CrtMemCheckpoint( &s1 );

@@ -54,7 +54,7 @@ public:
 
 
 	int nPoints;
-	FindFermi(Ipp64f * param, int cdev);
+	FindFermi(Ipp64f * param, int cdev,int Ngrid);
 	int UpdatePar(double *param);
 	int PrintPar();
 	int ReturnStart(Ipp64f *startpoint);

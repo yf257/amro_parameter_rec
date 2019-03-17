@@ -40,22 +40,22 @@ void GeneticAlgorithm::initializeParameters(double* dataSet, int dataSetLength, 
 	
 	for (int i = 0; i < _nPopulation; i++) {
 
-		_populationParametersOld[i].h1 = (randomDouble(0.02, 0.08));
+		_populationParametersOld[i].h1 = (randomDouble(0.03, 0.05));
 
 		//_populationParametersOld[i].h2 = (randomDouble(350, 750));
-		_populationParametersOld[i].h2 = (randomDouble(50, 150));
+		_populationParametersOld[i].h2 = (randomDouble(80, 100));
 		//_populationParametersOld[i].h2 = 181.98;
 		//_populationParametersOld[i].h2 = 557.568650327878;
 
 		//_populationParametersOld[i].h3 = (randomDouble(500, 550));
 		_populationParametersOld[i].h3 = 190;
 
-		_populationParametersOld[i].h4 = -1 * (randomDouble(20, 50));//(30,100)
+		_populationParametersOld[i].h4 = -1 * (randomDouble(20, 30));//(30,100)
 		//_populationParametersOld[i].h4 = -30.4;
-		_populationParametersOld[i].h5 = (randomDouble(5, 30));
+		_populationParametersOld[i].h5 = (randomDouble(5, 22));
 		//_populationParametersOld[i].h5 = 13.397;
 
-		_populationParametersOld[i].h6 = (randomDouble(5, 30));
+		_populationParametersOld[i].h6 = (randomDouble(5, 16));
 		//_populationParametersOld[i].h6 = 13.397;
 		_populationParametersOld[i].h7 = 0 ;
 		//_populationParametersOld[i].h7 = -1.2;
@@ -67,7 +67,7 @@ void GeneticAlgorithm::initializeParameters(double* dataSet, int dataSetLength, 
 		_populationParametersOld[i].h8 = _populationParametersOld[i].h1;
 		//_populationParametersOld[i].h8 = 0;
 		//_populationParametersOld[i].h9 = 2 * (ceil(randomDouble(0, 15)));
-		_populationParametersOld[i].h9 = randomDouble(1, 50);
+		_populationParametersOld[i].h9 = randomDouble(1, 5);
 		//paramPointer[0] = _populationParametersOld[i].h1;
 		//paramPointer[1] = _populationParametersOld[i].h2;
 		//paramPointer[2] = _populationParametersOld[i].h3;
@@ -144,7 +144,7 @@ void GeneticAlgorithm::initializeParameters(double* dataSet, int dataSetLength, 
 		out << _populationParametersOld[genera].h1 << '\t' << _populationParametersOld[genera].h2 << '\t' << _populationParametersOld[genera].h3 << '\t' << _populationParametersOld[genera].h4 << '\t' << _populationParametersOld[genera].h5 << '\t' << _populationParametersOld[genera].h6 << '\t' << _populationParametersOld[genera].h7 << '\t' << _populationParametersOld[genera].h8 << '\t' << _populationParametersOld[genera].h9 << '\t' << _populationParametersOld[genera].area << '\t' << _populationParametersOld[genera].chiSq << std::endl;
 	}
 	out.close();
-	//mkl_free_buffers();
+	mkl_free_buffers();
 	//delete paramPointer;
 		_minimumParameters.h1 = 1;
 		_minimumParameters.h2 = 1;

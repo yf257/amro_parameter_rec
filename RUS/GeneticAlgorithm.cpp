@@ -26,6 +26,10 @@ GeneticAlgorithm::GeneticAlgorithm(double* dataSet, int dataSetLength,  int nPop
 GeneticAlgorithm::~GeneticAlgorithm(void){
 	delete [] _populationParametersNew;
 	delete [] _populationParametersOld;
+	delete[] ints1;
+	delete[] ints2;
+	delete[] ints3;
+
 }
 
 void GeneticAlgorithm::calculateMinimum(){
@@ -54,7 +58,7 @@ double GeneticAlgorithm::calculateResidual(Parameters::fitParameters * parameter
 	
 	double residual  = 0;	
 	double * paramPointer = &(parameters->h1);	
-	Ipp64f area = 0;
+	//Ipp64f area = 0;
 	for(int i = 0; i < nParams; i++){
 		_paramArray[threadID][i] = *paramPointer;
 	
@@ -66,20 +70,22 @@ double GeneticAlgorithm::calculateResidual(Parameters::fitParameters * parameter
 		//std::cout<< "valid P" << std::endl;
 		
 		
-		area = _paramArray[threadID][9];
+		//area = _paramArray[threadID][9];
 		//if (area > 0.15 && area < 0.25) {
+		if (_paramArray[threadID][9 - 1] >= 1) {
 			calculateAMRO calculateAMRO1(_dataSet, _paramArray[threadID], _thetas, cdevNum, gridNum, _dataSetLength, _phis);
 			residual = calculateAMRO1.returnvalue(_paramArray[threadID]);
 			//std::cout << std::left << std::setfill(' ') << std::setw(10) << _paramArray[threadID][0] << "," << _paramArray[threadID][1] << "," << _paramArray[threadID][2] << "," << _paramArray[threadID][3] << "," << _paramArray[threadID][4] << "," << _paramArray[threadID][5] << "," << _paramArray[threadID][6] << "," << _paramArray[threadID][7] << "," << _paramArray[threadID][8] << std::endl;
 			//std::cout << "valid dopping: " << area << std::setfill(' ')<<"residual: "<< residual <<std::endl;
 			//std::cout << "valid P & doping" << std::endl;
+		}
 		//}
-		//else {
-		//	residual = std::numeric_limits<double>::infinity();
+		else {
+			residual = std::numeric_limits<double>::infinity();
 		//	std::cout << "invalid dopping: " << area <<std::endl;
 		//}
 		//std::cout << "dopping: " << area <<std::endl;
-	//}
+	}
 	//else {
 	//	residual = std::numeric_limits<double>::infinity();
 	//	std::cout << "invalid P" << std::endl;
@@ -237,15 +243,23 @@ void GeneticAlgorithm::calculateNewGenerations(int nGenerations){
 		filename.append("generation");
 	    filename.append(std::to_string(i+10));
 		filename.append(".dat");
+		std::string filename2 = "";
+		filename2 = "";
+		filename2.append("generation_old");
+		filename2.append(std::to_string(i + 10));
+		filename2.append(".dat");
 		std::ofstream out;
 	    out.open(filename);
 		out.precision(15);
+		std::ofstream out2;
+		out2.open(filename2);
+		out2.precision(15);
 		for (int genera = 0; genera < _nPopulation; ++genera) {
-		
+			out2 << _populationParametersOld[genera].h1 << '\t' << _populationParametersOld[genera].h2 << '\t' << _populationParametersOld[genera].h3 << '\t' << _populationParametersOld[genera].h4 << '\t' << _populationParametersOld[genera].h5 << '\t' << _populationParametersOld[genera].h6 << '\t' << _populationParametersOld[genera].h7 << '\t' << _populationParametersOld[genera].h8 << '\t' << _populationParametersOld[genera].h9 << '\t' << _populationParametersOld[genera].area << '\t' << _populationParametersOld[genera].chiSq << std::endl;
 			out << _populationParametersNew[genera].h1 << '\t' << _populationParametersNew[genera].h2 << '\t' << _populationParametersNew[genera].h3 << '\t' << _populationParametersNew[genera].h4 << '\t' << _populationParametersNew[genera].h5 << '\t' << _populationParametersNew[genera].h6 << '\t' << _populationParametersNew[genera].h7 << '\t' << _populationParametersNew[genera].h8 << '\t' << _populationParametersNew[genera].h9 << '\t' << _populationParametersNew[genera].area <<'\t' <<_populationParametersNew[genera].chiSq << std::endl;
 		}
 		out.close();
-		
+		out2.close();
 		for(int timerIndex = 0; timerIndex < nThreads; timerIndex++){
 		totalTime += threadContents[timerIndex].arrayBounds.time;
 		}
@@ -283,7 +297,7 @@ void GeneticAlgorithm::residualCalculatingThread(Parameters::arrayBounds * array
 	
 			QueryPerformanceCounter(&time1);
 
-		//_populationParametersNew[i].area = calculateArea(&_populationParametersNew[i],arrayBounds->threadID);
+		_populationParametersNew[i].area = 0;//calculateArea(&_populationParametersNew[i],arrayBounds->threadID);
 		_populationParametersNew[i].chiSq = calculateResidual(&_populationParametersNew[i], arrayBounds->threadID);
 		QueryPerformanceCounter(&time2);
 		arrayBounds->time += 1000*(double)(time2.QuadPart-time1.QuadPart)/(freq.QuadPart);

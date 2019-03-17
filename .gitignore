@@ -30,6 +30,7 @@ _ReSharper*/
 *.vssscc
 $tf*/
 *.opensdf
+*.opendb
 *.ipch
 *.BASE
 *.LOCAL
